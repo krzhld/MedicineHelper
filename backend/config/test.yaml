@@ -1,0 +1,481 @@
+openapi: 3.0.0
+x-stoplight:
+  id: it49qptbf1uop
+info:
+  title: clinic
+  version: '1.0'
+  description: API for clinic
+servers:
+  - url: 'http://clinic.ferrion.tech'
+paths:
+  '/api/doctor/{id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: Doctor Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/doctor'
+      operationId: get-doctor-id
+      description: get doctor by id
+    post:
+      summary: ''
+      operationId: post-doctor-id
+      responses:
+        '200':
+          description: Doctor updated
+      description: change doctor data
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/doctor'
+    delete:
+      summary: ''
+      operationId: delete-doctor-id
+      responses:
+        '200':
+          description: Doctor deleted
+      description: delete a doctor by id
+  /api/doctor:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: All doctors found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/doctor'
+      operationId: get-doctor
+      description: get all doctors
+    post:
+      summary: ''
+      operationId: post-doctor
+      responses:
+        '200':
+          description: Doctor created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/doctor'
+      description: Create a new doctor
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/doctor'
+    parameters: []
+  '/api/patient/{id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: Patient found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/patient'
+      operationId: get-patient-id
+      description: get patient by id
+    delete:
+      summary: ''
+      operationId: delete-patient-id
+      responses:
+        '200':
+          description: Patient deleted
+      description: delete patient by id
+    post:
+      summary: ''
+      operationId: post-patient-id
+      responses:
+        '200':
+          description: Patient updated
+      description: change information about patient
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/patient'
+  /api/patient:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: All patients found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/patient'
+      operationId: get-patient
+      description: get all patients
+    post:
+      summary: ''
+      operationId: post-patient
+      responses:
+        '200':
+          description: Patient created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/patient'
+      description: create a new patient
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/patient'
+    parameters: []
+  /api/login:
+    post:
+      summary: ''
+      operationId: post-login
+      responses:
+        '200':
+          description: OK
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                login:
+                  type: string
+                password:
+                  type: string
+      description: Users authorization
+    parameters: []
+  /api/registration:
+    post:
+      summary: ''
+      operationId: post-registration
+      responses:
+        '200':
+          description: OK
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                login:
+                  type: string
+                password:
+                  type: string
+      description: Users registration
+    parameters: []
+  /api/logout:
+    post:
+      summary: ''
+      operationId: post-logout
+      responses:
+        '200':
+          description: OK
+    parameters: []
+  '/api/profile/{login}':
+    parameters:
+      - schema:
+          type: string
+        name: login
+        in: path
+        required: true
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+      operationId: get-profile-login
+      description: ''
+  '/api/users/{userId}':
+    parameters:
+      - schema:
+          type: integer
+        name: userId
+        in: path
+        required: true
+        description: Id of an existing user.
+    get:
+      summary: Get User Info by User ID
+      tags: []
+      responses:
+        '200':
+          description: User Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              examples:
+                Get User Alice Smith:
+                  value:
+                    id: 142
+                    firstName: Alice
+                    lastName: Smith
+                    email: alice.smith@gmail.com
+                    dateOfBirth: '1997-10-31'
+                    emailVerified: true
+                    signUpDate: '2019-08-24'
+        '404':
+          description: User Not Found
+      operationId: get-users-userId
+      description: Retrieve the information of the user with the matching user ID.
+    patch:
+      summary: Update User Information
+      operationId: patch-users-userId
+      responses:
+        '200':
+          description: User Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              examples:
+                Updated User Rebecca Baker:
+                  value:
+                    id: 13
+                    firstName: Rebecca
+                    lastName: Baker
+                    email: rebecca@gmail.com
+                    dateOfBirth: '1985-10-02'
+                    emailVerified: false
+                    createDate: '2019-08-24'
+        '404':
+          description: User Not Found
+        '409':
+          description: Email Already Taken
+      description: Update the information of an existing user.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                email:
+                  type: string
+                  description: 'If a new email is given, the user''s email verified property will be set to false.'
+                dateOfBirth:
+                  type: string
+            examples:
+              Update First Name:
+                value:
+                  firstName: Rebecca
+              Update Email:
+                value:
+                  email: rebecca@gmail.com
+              Update Last Name & Date of Birth:
+                value:
+                  lastName: Baker
+                  dateOfBirth: '1985-10-02'
+        description: Patch user properties to update.
+    post:
+      summary: ''
+      operationId: post-users-userId
+      responses:
+        '200':
+          description: Patient updated
+      description: change information about patient
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/patient'
+  /api/user:
+    post:
+      summary: Create New User
+      operationId: post-user
+      responses:
+        '200':
+          description: User Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              examples:
+                New User Bob Fellow:
+                  value:
+                    id: 12
+                    firstName: Bob
+                    lastName: Fellow
+                    email: bob.fellow@gmail.com
+                    dateOfBirth: '1996-08-24'
+                    emailVerified: false
+                    createDate: '2020-11-18'
+        '400':
+          description: Missing Required Information
+        '409':
+          description: Email Already Taken
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                email:
+                  type: string
+                dateOfBirth:
+                  type: string
+                  format: date
+              required:
+                - firstName
+                - lastName
+                - email
+                - dateOfBirth
+            examples:
+              Create User Bob Fellow:
+                value:
+                  firstName: Bob
+                  lastName: Fellow
+                  email: bob.fellow@gmail.com
+                  dateOfBirth: '1996-08-24'
+        description: Post the necessary fields for the API to create a new user.
+      description: Create a new user.
+    parameters: []
+  '/api/doctor/<int:id>/is_online':
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+      operationId: 'get-api-doctor-int:id-is_online'
+      description: is doctor online
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+components:
+  schemas:
+    User:
+      title: User
+      type: object
+      x-examples:
+        Alice Smith:
+          id: 142
+          firstName: Alice
+          lastName: Smith
+          email: alice.smith@gmail.com
+          dateOfBirth: '1997-10-31'
+          emailVerified: true
+          signUpDate: '2019-08-24'
+      properties:
+        id:
+          type: integer
+          description: Unique identifier for the given user.
+        login:
+          type: string
+        password:
+          type: string
+        role:
+          type: string
+        last_login:
+          type: string
+      required:
+        - id
+    doctor:
+      title: Doctor
+      x-stoplight:
+        id: lujh6hhh7ez94
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        surname:
+          type: string
+        patronymic:
+          type: string
+        specialization:
+          type: string
+        patients:
+          type: array
+          items:
+            $ref: '#/components/schemas/patient'
+        user:
+          $ref: '#/components/schemas/User'
+    patient:
+      title: Patient
+      x-stoplight:
+        id: jny59j4yn9zo4
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        surname:
+          type: string
+        patronymic:
+          type: string
+        birth_date:
+          type: string
+        sex:
+          type: string
+        growth:
+          type: number
+        weight:
+          type: number
+        ' blood_characteristics':
+          type: array
+          items:
+            $ref: '#/components/schemas/PatientBloodCharacteristics'
+        doctors:
+          type: array
+          items:
+            $ref: '#/components/schemas/doctor'
+        user:
+          $ref: '#/components/schemas/User'
+    PatientBloodCharacteristics:
+      title: PatientBloodCharacteristics
+      x-stoplight:
+        id: au4au8r0yyves
+      type: object
+      properties:
+        id:
+          type: string
+        measure_datetime:
+          type: string
+        pulse:
+          type: integer
+        diastolic_pressure:
+          type: integer
+        systolic_pressure:
+          type: integer
+        saturation:
+          type: number
+        patient:
+          $ref: '#/components/schemas/patient'
+  securitySchemes:
+    API Key - 1:
+      name: API Key
+      type: apiKey
+      in: cookie
+security:
+  - API Key - 1: []

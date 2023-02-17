@@ -1,0 +1,10 @@
+version: "3.9"
+services:
+  clinic_app:
+    container_name: "clinic_app"
+    ports:
+      - "80:5000"
+    image: "clinic_app:latest"
+    privileged: true
+    volumes:
+      - ./config:/app/config

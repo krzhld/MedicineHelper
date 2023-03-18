@@ -60,6 +60,19 @@ class DoctorPersonalAccount extends StatelessWidget {
               )
             ],
           ),
+          SizedBox(height: 10),
+          Row(
+            children: <Widget>[
+              Text(
+                'Мой рейтинг: ',
+                style: TextStyle(color: Colors.grey, fontSize: 20),
+              ),
+              Text(
+                '',
+                style: TextStyle(color: Colors.teal, fontSize: 20),
+              )
+            ],
+          ),
         ],
       ),
     );

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:medicine_helper/ui/widgets/dropdown_button_gender.dart';
+import 'package:MedicineHelper/ui/widgets/dropdown_button_gender.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 var maskFormatterDate = new MaskTextInputFormatter(

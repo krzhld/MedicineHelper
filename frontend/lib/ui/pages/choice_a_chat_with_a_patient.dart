@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:medicine_helper/ui/pages/chat.dart';
+import 'package:MedicineHelper/ui/pages/chat.dart';
 
 class ChoiceChatWithPatient extends StatefulWidget {
   _ChoiceChatWithPatient createState() {

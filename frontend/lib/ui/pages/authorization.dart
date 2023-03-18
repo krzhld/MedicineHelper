@@ -5,9 +5,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:medicine_helper/ui/pages/registration.dart';
-import 'package:medicine_helper/ui/pages/patient.dart';
-import 'package:medicine_helper/ui/pages/doctor.dart';
+import 'package:MedicineHelper/ui/pages/registration_patient.dart';
+import 'package:MedicineHelper/ui/pages/registration_doctor.dart';
+import 'package:MedicineHelper/ui/pages/patient.dart';
+import 'package:MedicineHelper/ui/pages/doctor.dart';
 
 class Authorization extends StatefulWidget {
   const Authorization({super.key});
@@ -101,12 +102,24 @@ class _AuthorizationState extends State<Authorization> {
                 width: 400.0,
                 height: 50.0,
                 child: OutlinedButton(
-                  child: const Text("Регистрация"),
+                  child: const Text("Зарегестрироваться пациенту"),
                   onPressed: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const Registration()));
+                            builder: (context) => const RegistrationPatient()));
+                  },
+                )),
+            SizedBox(
+                width: 400.0,
+                height: 50.0,
+                child: OutlinedButton(
+                  child: const Text("Зарегестрироваться врачу"),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const RegistrationDoctor()));
                   },
                 )),
           ],

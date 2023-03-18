@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:medicine_helper/ui/pages/patient_personal_account.dart';
+import 'package:MedicineHelper/ui/pages/patient_personal_account.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:medicine_helper/ui/pages/choice_a_chat_with_a_doctor.dart';
+import 'package:MedicineHelper/ui/pages/choice_a_chat_with_a_doctor.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 

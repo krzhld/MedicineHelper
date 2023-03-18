@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:medicine_helper/ui/pages/authorization.dart';
-import 'package:medicine_helper/ui/pages/contacts.dart';
+import 'package:MedicineHelper/ui/pages/authorization.dart';
+import 'package:MedicineHelper/ui/pages/contacts.dart';
+import 'package:MedicineHelper/ui/pages/express_test.dart';
+import 'package:MedicineHelper/ui/pages/list_of_doctors_in_organization.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -40,6 +42,30 @@ class HomePage extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                             builder: (context) => const Contacts()));
+                  },
+                )),
+            SizedBox(
+                width: 400.0,
+                height: 50.0,
+                child: OutlinedButton(
+                  child: const Text("Экспресс-тест"),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ExpressTest()));
+                  },
+                )),
+            SizedBox(
+                width: 400.0,
+                height: 50.0,
+                child: OutlinedButton(
+                  child: const Text("Наши специалисты"),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ListOfDoctors()));
                   },
                 )),
           ],

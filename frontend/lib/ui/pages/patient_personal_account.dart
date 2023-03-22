@@ -115,6 +115,49 @@ class _PatientPersonalAccount extends State<PatientPersonalAcccount> {
             ],
           ),
           SizedBox(height: 10),
+          Row(
+            children: <Widget>[
+              Text(
+                'Мой рейтинг: ',
+                style: TextStyle(color: Colors.grey, fontSize: 20),
+              ),
+              Text(
+                '',
+                style: TextStyle(color: Colors.teal, fontSize: 20),
+              )
+            ],
+          ),
+          const SizedBox(height: 10),
+          SizedBox(
+            height: 50.0,
+            child: OutlinedButton(
+              child: const Text("Поменять пароль"),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (_) => AlertDialog(
+                    content: Text(
+                        "Отправить письмо на эл. почту с ссылкой на смену пароля?"),
+                    actions: <Widget>[
+                      TextButton(
+                        child: Text('Да'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      TextButton(
+                        child: Text('Нет'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      )
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+          SizedBox(height: 10),
           new Container(
             child: OutlinedButton(
               child: new Text(

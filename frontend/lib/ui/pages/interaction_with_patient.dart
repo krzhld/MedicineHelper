@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:MedicineHelper/ui/pages/chat.dart';
 
 class InteractionWithPatient extends StatefulWidget {
@@ -8,6 +9,11 @@ class InteractionWithPatient extends StatefulWidget {
   @override
   State<InteractionWithPatient> createState() => _InteractionWithPatient();
 }
+
+var maskFormatterDate = MaskTextInputFormatter(
+    mask: '##.##.####',
+    filter: {"#": RegExp(r'[0-9]')},
+    type: MaskAutoCompletionType.eager);
 
 bool _isShowHealthData = false;
 bool _isShowHealthDataInTime = false;
@@ -28,13 +34,17 @@ class _InteractionWithPatient extends State<InteractionWithPatient> {
                 _isShowHealthDataInTime ? 'Скрыть' : 'Просмотр данных пациента',
               ),
               onPressed: () {
-                null;
+                setState(
+                  () {
+                    _isShowHealthDataInTime = !_isShowHealthDataInTime;
+                  },
+                );
               },
             ),
           ),
           const SizedBox(height: 10),
           Visibility(
-            visible: _isShowHealthData,
+            visible: _isShowHealthDataInTime,
             child: const Text(
               'За какой период вывести данные:',
               style: TextStyle(color: Colors.teal, fontSize: 20),
@@ -47,24 +57,20 @@ class _InteractionWithPatient extends State<InteractionWithPatient> {
               children: <Widget>[
                 TextField(
                   keyboardType: TextInputType.number,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly,
-                  ],
+                  inputFormatters: [maskFormatterDate],
                   decoration: const InputDecoration(labelText: "С"),
                 ),
                 const SizedBox(height: 10),
                 TextField(
                   keyboardType: TextInputType.number,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly,
-                  ],
+                  inputFormatters: [maskFormatterDate],
                   decoration: const InputDecoration(labelText: "По"),
                 ),
               ],
             ),
           ),
           Visibility(
-            visible: _isShowHealthData,
+            visible: _isShowHealthDataInTime,
             child: OutlinedButton(
               child: const Text("Посмотреть данные"),
               onPressed: () {
@@ -74,7 +80,7 @@ class _InteractionWithPatient extends State<InteractionWithPatient> {
           ),
           const SizedBox(height: 10),
           Visibility(
-            visible: _isShowHealthData,
+            visible: _isShowHealthDataInTime,
             child: OutlinedButton(
               child: const Text("Построить графики"),
               onPressed: () {
@@ -84,7 +90,7 @@ class _InteractionWithPatient extends State<InteractionWithPatient> {
           ),
           const SizedBox(height: 10),
           Visibility(
-            visible: _isShowHealthData,
+            visible: _isShowHealthDataInTime,
             child: OutlinedButton(
               child: const Text("Скачать данные в формате csv"),
               onPressed: () {
@@ -283,7 +289,8 @@ class _InteractionWithPatient extends State<InteractionWithPatient> {
             child: OutlinedButton(
               child: const Text("Чат с пациентом"),
               onPressed: () {
-                null;
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => Chat()));
               },
             ),
           ),

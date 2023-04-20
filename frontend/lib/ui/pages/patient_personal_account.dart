@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:medicine_helper/ui/widgets/dropdown_button_gender.dart';
+import 'package:MedicineHelper/ui/widgets/dropdown_button_gender.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 var maskFormatterDate = new MaskTextInputFormatter(
@@ -113,6 +113,49 @@ class _PatientPersonalAccount extends State<PatientPersonalAcccount> {
                 style: TextStyle(color: Colors.teal, fontSize: 20),
               )
             ],
+          ),
+          SizedBox(height: 10),
+          Row(
+            children: <Widget>[
+              Text(
+                'Мой рейтинг: ',
+                style: TextStyle(color: Colors.grey, fontSize: 20),
+              ),
+              Text(
+                '',
+                style: TextStyle(color: Colors.teal, fontSize: 20),
+              )
+            ],
+          ),
+          const SizedBox(height: 10),
+          SizedBox(
+            height: 50.0,
+            child: OutlinedButton(
+              child: const Text("Поменять пароль"),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (_) => AlertDialog(
+                    content: Text(
+                        "Отправить письмо на эл. почту с ссылкой на смену пароля?"),
+                    actions: <Widget>[
+                      TextButton(
+                        child: Text('Да'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      TextButton(
+                        child: Text('Нет'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      )
+                    ],
+                  ),
+                );
+              },
+            ),
           ),
           SizedBox(height: 10),
           new Container(

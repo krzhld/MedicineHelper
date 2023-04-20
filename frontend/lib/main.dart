@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:medicine_helper/ui/pages/home.dart';
+import 'package:MedicineHelper/ui/pages/home.dart';
 
 void main() => runApp(const MedicineHelper());
 

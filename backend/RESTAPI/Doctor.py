@@ -25,11 +25,6 @@ def restapi_doctor(id):
             return make_response(403)
 
 
-@doctor_crud_blueprint.route("/api/doctor/<int:id>/is_online", methods=['GET'])
-def restapi_is_doctor_online(id):
-    return f"\"doctorOnline\":{'true' if is_doctor_online(id) else 'false'}"
-
-
 @doctor_crud_blueprint.route("/api/doctor", methods=['GET', 'POST'])
 def restapi_doctors():
     if request.method == 'GET':
@@ -40,4 +35,3 @@ def restapi_doctors():
             return create_doctor(**data)
         else:
             return make_response(403)
-

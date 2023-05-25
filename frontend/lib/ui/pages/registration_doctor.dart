@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+
+import '../../services/snack_bar.dart';
 
 class RegistrationDoctor extends StatefulWidget {
   const RegistrationDoctor({super.key});
@@ -10,53 +13,92 @@ class RegistrationDoctor extends StatefulWidget {
 }
 
 class _RegistrationDoctorState extends State<RegistrationDoctor> {
-  late String login;
-  late String password;
-  late String password_again;
-  final TextEditingController _login_controller = TextEditingController();
-  final TextEditingController _password_controller = TextEditingController();
-  final TextEditingController _password_again_controller =
+  bool isHiddenPassword = true;
+  final TextEditingController emailTextInputController =
       TextEditingController();
-
-  Future<http.Response> createAccount(String login, String password) {
-    return http.post(
-      Uri.parse('registration'),
-      headers: {'Accept': 'application/json'},
-      body: jsonEncode({'login': login, 'password': password}),
-    );
-  }
+  final TextEditingController passwordTextInputController =
+      TextEditingController();
+  final TextEditingController passwordTextRepeatInputController =
+      TextEditingController();
+  final TextEditingController nameTextInputController = TextEditingController();
+  final TextEditingController surnameTextInputController =
+      TextEditingController();
+  final TextEditingController patronymicTextInputController =
+      TextEditingController();
+  final TextEditingController specializationTextInputController =
+      TextEditingController();
+  final formKey = GlobalKey<FormState>();
 
   @override
-  void initState() {
-    super.initState();
-    _login_controller.addListener(() {
-      final String text = _login_controller.text;
-      _login_controller.value = _login_controller.value.copyWith(
-        text: text,
-        selection:
-            TextSelection(baseOffset: text.length, extentOffset: text.length),
-        composing: TextRange.empty,
-      );
+  void dispose() {
+    emailTextInputController.dispose();
+    passwordTextInputController.dispose();
+    passwordTextRepeatInputController.dispose();
+    nameTextInputController.dispose();
+    surnameTextInputController.dispose();
+    patronymicTextInputController.dispose();
+    specializationTextInputController.dispose();
+
+    super.dispose();
+  }
+
+  void togglePasswordView() {
+    setState(() {
+      isHiddenPassword = !isHiddenPassword;
     });
-    _password_controller.addListener(() {
-      final String text = _password_controller.text;
-      _password_controller.value = _password_controller.value.copyWith(
-        text: text,
-        selection:
-            TextSelection(baseOffset: text.length, extentOffset: text.length),
-        composing: TextRange.empty,
+  }
+
+  Future<void> signUp() async {
+    final navigator = Navigator.of(context);
+
+    final isValid = formKey.currentState!.validate();
+    if (!isValid) return;
+
+    if (passwordTextInputController.text !=
+        passwordTextRepeatInputController.text) {
+      SnackBarService.showSnackBar(
+        context,
+        'Пароли должны совпадать',
+        true,
       );
-    });
-    _password_again_controller.addListener(() {
-      final String text = _password_again_controller.text;
-      _password_again_controller.value =
-          _password_again_controller.value.copyWith(
-        text: text,
-        selection:
-            TextSelection(baseOffset: text.length, extentOffset: text.length),
-        composing: TextRange.empty,
+      return;
+    }
+
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: emailTextInputController.text.trim(),
+        password: passwordTextInputController.text.trim(),
       );
-    });
+    } on FirebaseAuthException catch (e) {
+      print(e.code);
+
+      if (e.code == 'email-already-in-use') {
+        SnackBarService.showSnackBar(
+          context,
+          'Такой Email уже используется, повторите попытку с использованием другого Email',
+          true,
+        );
+        return;
+      } else {
+        SnackBarService.showSnackBar(
+          context,
+          'Неизвестная ошибка! Попробуйте еще раз или обратитесь в поддержку.',
+          true,
+        );
+      }
+    }
+
+    final db = FirebaseFirestore.instance;
+    final data = {
+      "email": emailTextInputController.text,
+      "name": nameTextInputController.text,
+      "surname": surnameTextInputController.text,
+      "patronymic": patronymicTextInputController.text,
+      "specialization": specializationTextInputController.text,
+    };
+
+    db.collection("doctors").add(data);
+    navigator.pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
   }
 
   @override
@@ -100,30 +142,47 @@ class _RegistrationDoctorState extends State<RegistrationDoctor> {
           SizedBox(
             width: 400.0,
             child: TextFormField(
-              controller: _login_controller,
+              keyboardType: TextInputType.text,
+              //  controller: _login_controller,
+              decoration: const InputDecoration(
+                  labelText: 'Специализация', border: OutlineInputBorder()),
+              //  onChanged: (value) => login = value,
+            ),
+          ),
+          SizedBox(
+            width: 400.0,
+            child: TextFormField(
+              controller: emailTextInputController,
               decoration: const InputDecoration(
                   labelText: 'Email', border: OutlineInputBorder()),
-              onChanged: (value) => login = value,
+              validator: (email) =>
+                  email != null && !EmailValidator.validate(email)
+                      ? 'Введите правильный Email'
+                      : null,
             ),
           ),
           SizedBox(
             width: 400.0,
             child: TextFormField(
-              controller: _password_controller,
+              controller: passwordTextInputController,
               decoration: const InputDecoration(
                   labelText: 'Пароль', border: OutlineInputBorder()),
-              obscureText: true,
-              onChanged: (value) => password = value,
+              obscureText: isHiddenPassword,
+              validator: (value) => value != null && value.length < 6
+                  ? 'Минимум 6 символов'
+                  : null,
             ),
           ),
           SizedBox(
             width: 400.0,
             child: TextFormField(
-              controller: _password_again_controller,
+              controller: passwordTextRepeatInputController,
               decoration: const InputDecoration(
                   labelText: 'Повторите пароль', border: OutlineInputBorder()),
               obscureText: true,
-              onChanged: (value) => password_again = value,
+              validator: (value) => value != null && value.length < 6
+                  ? 'Минимум 6 символов'
+                  : null,
             ),
           ),
           SizedBox(
@@ -131,22 +190,13 @@ class _RegistrationDoctorState extends State<RegistrationDoctor> {
               height: 50.0,
               child: OutlinedButton(
                 child: const Text('Зарегистрироваться'),
-                onPressed: () {
-                  if (password != password_again) {
-                    null;
-                  } else {
-                    createAccount(login, password);
-                  }
-                },
+                onPressed: signUp,
               )),
           SizedBox(
             height: 50.0,
             child: OutlinedButton(
               child: const Text("На главную"),
-              onPressed: () {
-                Navigator.pop(context);
-                Navigator.pop(context);
-              },
+              onPressed: () => Navigator.of(context).pushNamed('/'),
             ),
           ),
         ],

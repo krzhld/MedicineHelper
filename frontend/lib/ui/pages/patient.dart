@@ -1,9 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:MedicineHelper/ui/pages/patient_personal_account.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:MedicineHelper/ui/pages/choice_a_chat_with_a_doctor.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:flutter/services.dart';
 
 var maskFormatterDate = MaskTextInputFormatter(
@@ -30,32 +29,18 @@ class Patient extends StatefulWidget {
 }
 
 class _Patient extends State<Patient> {
-  final client = http.Client();
-  final uri = Uri.parse('http://clinic.ferrion.tech/api/doctor');
-
-  var _doctorsJson = [];
-
-  void fetchDoctors() async {
-    try {
-      final response = await client.get(uri);
-      final jsonData = jsonDecode(response.body) as List;
-
-      setState(() {
-        _doctorsJson = jsonData;
-      });
-    } catch (err) {}
-  }
-
   @override
   void initState() {
     super.initState();
-    fetchDoctors();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Страница пациента")),
+      appBar: AppBar(
+        title: const Text("Страница пациента"),
+        automaticallyImplyLeading: false,
+      ),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
         scrollDirection: Axis.vertical,
@@ -65,8 +50,10 @@ class _Patient extends State<Patient> {
             child: OutlinedButton(
               child: const Text("Выйти"),
               onPressed: () {
-                Navigator.pop(context);
-                Navigator.pop(context);
+                FirebaseAuth.instance.signOut();
+                //Navigator.pop(context);
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    '/home', (Route<dynamic> route) => false);
               },
             ),
           ),
@@ -224,7 +211,7 @@ class _Patient extends State<Patient> {
           Visibility(
             visible: _isShowDropdownDoctors && _availableActions,
             child: Text(
-              'Выберите врача:$_doctorsJson',
+              'Выберите врача: ',
               style: TextStyle(color: Colors.teal, fontSize: 20),
             ),
           ),

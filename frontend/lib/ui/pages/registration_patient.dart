@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:MedicineHelper/ui/widgets/dropdown_button_gender.dart';
 import 'package:flutter/services.dart';
-import 'dart:convert';
 
 class RegistrationPatient extends StatefulWidget {
   const RegistrationPatient({super.key});
@@ -25,14 +23,6 @@ class _RegistrationPatientState extends State<RegistrationPatient> {
   final TextEditingController _password_controller = TextEditingController();
   final TextEditingController _password_again_controller =
       TextEditingController();
-
-  Future<http.Response> createAccount(String login, String password) {
-    return http.post(
-      Uri.parse('registration'),
-      headers: {'Accept': 'application/json'},
-      body: jsonEncode({'login': login, 'password': password}),
-    );
-  }
 
   @override
   void initState() {
@@ -202,7 +192,7 @@ class _RegistrationPatientState extends State<RegistrationPatient> {
                   if (password != password_again) {
                     null;
                   } else {
-                    createAccount(login, password);
+                    null;
                   }
                 },
               )),

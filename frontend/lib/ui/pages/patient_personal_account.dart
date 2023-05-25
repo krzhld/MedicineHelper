@@ -8,6 +8,8 @@ var maskFormatterDate = new MaskTextInputFormatter(
     type: MaskAutoCompletionType.eager);
 
 class PatientPersonalAcccount extends StatefulWidget {
+  const PatientPersonalAcccount({super.key});
+
   _PatientPersonalAccount createState() {
     return new _PatientPersonalAccount();
   }
@@ -27,7 +29,7 @@ class _PatientPersonalAccount extends State<PatientPersonalAcccount> {
           Row(
             children: <Widget>[
               Text(
-                'Фамилия ',
+                'Фамилия: Сергеев',
                 style: TextStyle(color: Colors.grey, fontSize: 20),
               ),
               Text(
@@ -40,7 +42,7 @@ class _PatientPersonalAccount extends State<PatientPersonalAcccount> {
           Row(
             children: <Widget>[
               Text(
-                'Имя ',
+                'Имя: Сергей',
                 style: TextStyle(color: Colors.grey, fontSize: 20),
               ),
               Text(
@@ -53,7 +55,7 @@ class _PatientPersonalAccount extends State<PatientPersonalAcccount> {
           Row(
             children: <Widget>[
               Text(
-                'Отчество ',
+                'Отчество: Сергеевич',
                 style: TextStyle(color: Colors.grey, fontSize: 20),
               ),
               Text(
@@ -66,7 +68,7 @@ class _PatientPersonalAccount extends State<PatientPersonalAcccount> {
           Row(
             children: <Widget>[
               Text(
-                'Дата рождения ',
+                'Дата рождения: 02.04.1980',
                 style: TextStyle(color: Colors.grey, fontSize: 20),
               ),
               Text(
@@ -79,7 +81,7 @@ class _PatientPersonalAccount extends State<PatientPersonalAcccount> {
           Row(
             children: <Widget>[
               Text(
-                'Пол ',
+                'Пол: М',
                 style: TextStyle(color: Colors.grey, fontSize: 20),
               ),
               Text(
@@ -92,7 +94,7 @@ class _PatientPersonalAccount extends State<PatientPersonalAcccount> {
           Row(
             children: <Widget>[
               Text(
-                'Рост ',
+                'Рост: 170',
                 style: TextStyle(color: Colors.grey, fontSize: 20),
               ),
               Text(
@@ -105,7 +107,7 @@ class _PatientPersonalAccount extends State<PatientPersonalAcccount> {
           Row(
             children: <Widget>[
               Text(
-                'Вес ',
+                'Вес: 70',
                 style: TextStyle(color: Colors.grey, fontSize: 20),
               ),
               Text(
@@ -118,7 +120,7 @@ class _PatientPersonalAccount extends State<PatientPersonalAcccount> {
           Row(
             children: <Widget>[
               Text(
-                'Мой рейтинг: ',
+                'Мой рейтинг: 5',
                 style: TextStyle(color: Colors.grey, fontSize: 20),
               ),
               Text(
@@ -232,7 +234,7 @@ class _PatientPersonalAccount extends State<PatientPersonalAcccount> {
             visible: _isShow,
             child: TextField(
               keyboardType: TextInputType.number,
-              decoration: new InputDecoration(labelText: "Вес"),
+              decoration: new InputDecoration(labelText: "Вес (kg)"),
             ),
           ),
           SizedBox(height: 10),
